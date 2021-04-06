@@ -1,24 +1,28 @@
 package com.example.SelfGuest;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.awt.image.AreaAveragingScaleFilter;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 
 public class SelfGuestController {
 
+    List<GuestBookDto> guestEntriesList = new ArrayList<GuestBookDto>();
+
     @GetMapping("/entries")
-    public String getEntries(){
-        //return "[]";
-        return "[{'name':'Ram','comments':'I am 30 years old'}]";
+    public  List<GuestBookDto> getEntries(){
+
+        return guestEntriesList;
     }
 
     @PostMapping("/entries")
     @ResponseStatus(HttpStatus.CREATED)
-    public void addMovie(){
+    public void addMovie(@RequestBody GuestBookDto guestBookDtoobject){
+        guestEntriesList.add(guestBookDtoobject);
 
     }
 
