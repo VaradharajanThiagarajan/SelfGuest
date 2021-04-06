@@ -17,5 +17,11 @@ public class GuestBookDto {
         this.comments = comments;
     }
 
+    public String getName() {
+        return name;
+    }
 
+    public String getComments() {
+        return comments;
+    }
 }
