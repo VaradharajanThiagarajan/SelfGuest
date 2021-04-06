@@ -3,11 +3,19 @@ package com.example.SelfGuest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
+
+
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+
+import static com.sun.org.apache.xalan.internal.xsltc.dom.LoadDocument.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -15,6 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@AutoConfigureRestDocs // New Annotation
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 
 public class SelfGuestIT {
@@ -43,12 +52,14 @@ public class SelfGuestIT {
         mockMvc.perform(post("/entries")
                 .content(objectMapper.writeValueAsString(guestBookObject1))
                 .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isCreated());
+        ).andExpect(status().isCreated())
+                .andDo(document("AddGuestEntries"));
 
         mockMvc.perform(post("/entries")
                 .content(objectMapper.writeValueAsString(guestBookObject2))
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isCreated());
+
 
         mockMvc.perform(get("/entries")
         ).andExpect(status().isOk())
@@ -57,7 +68,11 @@ public class SelfGuestIT {
                 .andExpect(jsonPath("[0].comments").value("I am 30 years old"))
                 .andExpect(jsonPath("[1].name").value("Sam"))
                 .andExpect(jsonPath("[1].comments").value("I am 31 years old"))
-        ;
+                .andDo(document("Entries", responseFields(
+                        fieldWithPath("[0].name").description("Name of the guest"),
+                        fieldWithPath("[0].comments").description("comments of the Guest")
+                )));
+
 
 
     }

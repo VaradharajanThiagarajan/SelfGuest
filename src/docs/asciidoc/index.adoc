@@ -1,0 +1,15 @@
+Entries
+
+.request
+include::{snippets}/Entries/http-request.adoc[]
+
+.response
+include::{snippets}/Entries/http-response.adoc[]
+
+AddGuestEntries
+
+.request
+include::{snippets}/AddGuestEntries/http-request.adoc[]
+
+.response
+include::{snippets}/AddGuestEntries/http-response.adoc[]
