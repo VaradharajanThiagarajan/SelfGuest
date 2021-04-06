@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -29,4 +30,19 @@ public class SelfGuestIT {
         ).andExpect(status().isOk())
                 .andExpect(jsonPath("length()").value(0));
     }
+
+
+    @Test
+    public void addEntries() throws Exception{
+
+        GuestBookDto guestBookObject1 = new GuestBookDto("Ram","I am 30 years old");
+        mockMvc.perform(post("/entries")
+                .content(objectMapper.writeValueAsString(guestBookObject1))
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isCreated());
+
+
+    }
+
+
 }
