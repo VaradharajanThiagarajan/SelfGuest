@@ -12,7 +12,8 @@ public class SelfGuestController {
 
     @GetMapping("/entries")
     public String getEntries(){
-        return "[]";
+        //return "[]";
+        return "[{'name':'Ram','comments':'I am 30 years old'}]";
     }
 
     @PostMapping("/entries")

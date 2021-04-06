@@ -41,6 +41,13 @@ public class SelfGuestIT {
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isCreated());
 
+        mockMvc.perform(get("/entries")
+        ).andExpect(status().isOk())
+                .andExpect(jsonPath("length()").value(1))
+                .andExpect(jsonPath("[0].name").value("Ram"))
+                .andExpect(jsonPath("[0].comments").value("I am 30 years old"))
+        ;
+
 
     }
 
