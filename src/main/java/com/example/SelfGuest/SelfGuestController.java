@@ -11,18 +11,23 @@ import java.util.List;
 
 public class SelfGuestController {
 
-    List<GuestBookDto> guestEntriesList = new ArrayList<GuestBookDto>();
+    //List<GuestBookDto> guestEntriesList = new ArrayList<GuestBookDto>();
+    GuestBookService guestBookServiceobj;
+
+    public SelfGuestController(GuestBookService guestBookServiceobj) {
+        this.guestBookServiceobj = guestBookServiceobj;
+    }
 
     @GetMapping("/entries")
     public  List<GuestBookDto> getEntries(){
-
-        return guestEntriesList;
+        return this.guestBookServiceobj.fetchAll();
     }
 
     @PostMapping("/entries")
     @ResponseStatus(HttpStatus.CREATED)
     public void addMovie(@RequestBody GuestBookDto guestBookDtoobject){
-        guestEntriesList.add(guestBookDtoobject);
+        //guestEntriesList.add(guestBookDtoobject);
+        this.guestBookServiceobj.create(guestBookDtoobject);
 
     }
 
